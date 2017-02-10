@@ -66,6 +66,7 @@ const Formatter = function (options) {
   this.defaults = options.defaults;
   this.deriveLanguages = options.deriveLanguages || false;
   this.permalinkStyle = options.permalinkStyle;
+  this.filepath = options.filepath;
   this.deriveCategory = options.deriveCategory === undefined ? true : options.deriveCategory;
 };
 
@@ -330,6 +331,18 @@ Formatter.prototype.format = function (data) {
 
 Formatter.prototype.formatFilename = function (data) {
   const slug = data.properties.slug[0];
+
+  if (this.filepath) {
+    let jekyllResourceStub = {
+      data: {
+        properties: data.properties,
+        categories: data.categories || [],
+        slug: slug
+      }
+    };
+    let path = jekyllUtils.generateUrl(this.filepath, jekyllResourceStub).replace(/^\/+/, '');
+    return Promise.resolve(path);
+  }
 
   return Promise.resolve(
     '_posts/' +

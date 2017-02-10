@@ -326,6 +326,11 @@ describe('Formatter', function () {
       formatter = new Formatter({ noMarkdown: true });
       return formatter.formatFilename(baseMicroformatData).should.eventually.equal('_posts/2015-06-30-awesomeness-is-awesome.html');
     });
+
+    it('should build with a custom path', function () {
+      formatter = new Formatter({ filepath: 'content/notes/:year/:month/:slug.md' });
+      return formatter.formatFilename(baseMicroformatData).should.eventually.equal('content/notes/2015/06/awesomeness-is-awesome.md');
+    });
   });
 
   describe('formatURL', function () {
